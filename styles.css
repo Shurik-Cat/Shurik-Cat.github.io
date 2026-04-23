@@ -1,0 +1,233 @@
+.page {
+    background-color: black;
+    color: aliceblue;
+    margin: 0;
+    padding: 0;
+    font-family: 'Calibri';
+    padding-top: 80px;
+}
+
+.header {
+    background-color: #071F22;
+    min-height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header__title {
+    margin-left: 5%;
+}
+
+.header__title-text {
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 40px;
+}
+
+.header__nav {
+    display: flex;
+    gap: 150px;
+    margin-right: 15%;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown__title {
+    cursor: pointer;
+    padding: 20px 20px;
+    margin: -20px -20px;
+    font-size: 24px;
+}
+
+.dropdown__content {
+    display: none;
+    position: absolute;
+    background-color: #071F22;
+    border-radius: 10px;
+    min-width: 155px;
+    top: 170%;
+    left: -20px;
+    z-index: 1;
+}
+
+.dropdown__link {
+    color: aliceblue;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+}
+
+.dropdown__link:hover,
+.dropdown__title:hover {
+    background-color: #0a3a42;
+    border-radius: 10px;
+}
+
+.dropdown:hover .dropdown__content {
+    display: block;
+}
+
+.dropdown__title {
+    color: aliceblue;
+    text-decoration: none;
+}
+
+.main {
+    background: url('images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.main__feed {
+    width: 75%;
+    min-width: 768px;
+    background-color: #191F23;
+    height: auto;
+    padding: 0% 3%;
+    box-sizing: border-box;
+}
+
+.main__first-text {
+    font-size: 32px;
+    margin: 15px 0px;
+}
+
+.card {
+    display: flex;
+    gap: 0px;
+    margin: 40px;
+}
+
+.card__block {
+    width: 50%;
+    flex: none;
+    box-sizing: border-box;
+    padding: 0 100px;
+}
+
+.card__block--3 {
+    width: 33.333%;
+    padding: 0 40px;
+}
+
+.card__link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.card__image {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease;
+}
+
+.card__image--books {
+    background-image: url('images/book_bw.png');
+}
+
+.card__image--books:hover {
+    background-image: url('images/book.png');
+}
+
+.card__image--games {
+    background-image: url('images/game_bw.png');
+}
+
+.card__image--games:hover {
+    background-image: url('images/game.png');
+}
+
+.card__image--ar45 {
+    aspect-ratio: 4/5;
+}
+
+.card__image--metro-2033 {
+    background-image: url('images/metro_2033_book_cover_bw.jpg');
+}
+
+.card__image--metro-2033:hover {
+    background-image: url('images/metro_2033_book_cover.jpg');
+}
+
+.card__image--metro-2034 {
+    background-image: url('images/metro_2034_book_cover_bw.jpg');
+}
+
+.card__image--metro-2034:hover {
+    background-image: url('images/metro_2034_book_cover.jpg');
+}
+
+.card__image--metro-2035 {
+    background-image: url('images/metro_2035_book_cover_bw.jpg');
+}
+
+.card__image--metro-2035:hover {
+    background-image: url('images/metro_2035_book_cover.jpg');
+}
+
+.card__image--metro-2033_ {
+    background-image: url('images/metro_2033_game_cover_bw.jpg');
+}
+
+.card__image--metro-2033_:hover {
+    background-image: url('images/metro_2033_game_cover.jpg');
+}
+
+.card__image--metro-last-light {
+    background-image: url('images/metro_last_light_game_cover_bw.jpg');
+}
+
+.card__image--metro-last-light:hover {
+    background-image: url('images/metro_last_light_game_cover.jpg');
+}
+
+.card__image--metro-exodus {
+    background-image: url('images/metro_exodus_game_cover_bw.jpg');
+}
+
+.card__image--metro-exodus:hover {
+    background-image: url('images/metro_exodus_game_cover.jpg');
+}
+
+.card__title {
+    font-size: 64px;
+    color: aliceblue;
+    margin: 0px;
+}
+
+.card__title--3 {
+    font-size: 40px;
+}
+
+.footer {
+    padding: 0% 5%;
+}
+
+.footer__footnote {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
