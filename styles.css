@@ -144,72 +144,12 @@
     transition: all 0.3s ease;
 }
 
-.card__image--books {
-    background-image: url('images/book_bw.png');
+.card__image--set {
+    background-image: url('images/set.png');
 }
 
-.card__image--books:hover {
-    background-image: url('images/book.png');
-}
-
-.card__image--games {
-    background-image: url('images/game_bw.png');
-}
-
-.card__image--games:hover {
-    background-image: url('images/game.png');
-}
-
-.card__image--ar45 {
-    aspect-ratio: 4/5;
-}
-
-.card__image--metro-2033 {
-    background-image: url('images/metro_2033_book_cover_bw.jpg');
-}
-
-.card__image--metro-2033:hover {
-    background-image: url('images/metro_2033_book_cover.jpg');
-}
-
-.card__image--metro-2034 {
-    background-image: url('images/metro_2034_book_cover_bw.jpg');
-}
-
-.card__image--metro-2034:hover {
-    background-image: url('images/metro_2034_book_cover.jpg');
-}
-
-.card__image--metro-2035 {
-    background-image: url('images/metro_2035_book_cover_bw.jpg');
-}
-
-.card__image--metro-2035:hover {
-    background-image: url('images/metro_2035_book_cover.jpg');
-}
-
-.card__image--metro-2033_ {
-    background-image: url('images/metro_2033_game_cover_bw.jpg');
-}
-
-.card__image--metro-2033_:hover {
-    background-image: url('images/metro_2033_game_cover.jpg');
-}
-
-.card__image--metro-last-light {
-    background-image: url('images/metro_last_light_game_cover_bw.jpg');
-}
-
-.card__image--metro-last-light:hover {
-    background-image: url('images/metro_last_light_game_cover.jpg');
-}
-
-.card__image--metro-exodus {
-    background-image: url('images/metro_exodus_game_cover_bw.jpg');
-}
-
-.card__image--metro-exodus:hover {
-    background-image: url('images/metro_exodus_game_cover.jpg');
+.card__image--set:hover {
+    background-image: url('images/set.png');
 }
 
 .card__title {
@@ -223,11 +163,10 @@
 }
 
 .footer {
-    padding: 0% 5%;
+    padding: 0% 10%;
 }
 
 .footer__footnote {
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
