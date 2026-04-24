@@ -144,14 +144,6 @@
     transition: all 0.3s ease;
 }
 
-.card__image--set {
-    background-image: url('images/set.png');
-}
-
-.card__image--set:hover {
-    background-image: url('images/set.png');
-}
-
 .card__title {
     font-size: 64px;
     color: aliceblue;
