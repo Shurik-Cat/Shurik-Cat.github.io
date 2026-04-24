@@ -8,7 +8,7 @@
 }
 
 .header {
-    background-color: #071F22;
+    background-color: #fff566;
     min-height: 80px;
     display: flex;
     justify-content: space-between;
@@ -21,7 +21,7 @@
 }
 
 .header__title {
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 .header__title-text {
@@ -69,7 +69,7 @@
 
 .dropdown__link:hover,
 .dropdown__title:hover {
-    background-color: #0a3a42;
+    background-color: #7e7c03;
     border-radius: 10px;
 }
 
@@ -96,7 +96,7 @@
 .main__feed {
     width: 75%;
     min-width: 768px;
-    background-color: #191F23;
+    background-color: #02041d;
     height: auto;
     padding: 0% 3%;
     box-sizing: border-box;
