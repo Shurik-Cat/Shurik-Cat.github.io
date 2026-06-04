@@ -2,8 +2,179 @@ const catalog = {
     sets: [],           
     setsByYear: {},     
     nextId: 1,          
-    ownedIds: new Set()
+    ownedIds: new Set(),
+    currentSort: 'default'
 };
+
+function parsePieces(piecesStr) {
+    const match = piecesStr.match(/(\d+)/);
+    return match ? parseInt(match[1]) : 0;
+}
+
+function parseMinifigs(minifigsStr) {
+    const match = minifigsStr.match(/(\d+)/);
+    return match ? parseInt(match[1]) : 0;
+}
+
+function createCollectionPage() {
+    const page = document.createElement('div');
+    page.id = 'page-collection';
+    page.className = 'year-page';
+
+    const title = document.createElement('div');
+    title.className = 'year-title';
+    title.textContent = 'Моя коллекция';
+    page.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'sets-grid';
+    grid.id = 'collection-grid';
+    
+    page.appendChild(grid);
+    return page;
+}
+
+function updateCollectionPage() {
+    const grid = document.getElementById('collection-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    
+    const ownedSets = catalog.sets.filter(set => catalog.ownedIds.has(set.id));
+    const sortedSets = sortSets(ownedSets, catalog.currentSort); 
+    
+    const title = document.querySelector('#page-collection .year-title');
+    if (title) {
+        title.textContent = `Моя коллекция (${sortedSets.length} наборов)`; 
+    }
+    
+    if (sortedSets.length === 0) { 
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'empty-collection';
+        emptyMessage.innerHTML = `
+            <p>На данный момент в коллекции нет наборов</p>
+            <p>(отмечайте на сайте наборы галочкой, чтобы пополнить свою коллекцию)</p>
+        `;
+        grid.appendChild(emptyMessage);
+    } else {
+        sortedSets.forEach(set => { 
+            const card = createSetCard(set);
+            grid.appendChild(card);
+        });
+    }
+    
+    updateSortButtons(); 
+}
+
+function updateYearPage(year) {
+    const page = document.getElementById(`page-${year}`);
+    if (!page) return;
+    
+    const grid = page.querySelector('.sets-grid');
+    if (!grid) return;
+    
+    const yearSets = catalog.setsByYear[year] || [];
+    const sortedSets = sortSets(yearSets, catalog.currentSort);
+    const title = page.querySelector('.year-title');
+    if (title) {
+        const setCount = sortedSets.length;
+        title.textContent = `${year} год (${setCount} наборов)`;
+    }
+    
+    grid.innerHTML = '';
+    
+    sortedSets.forEach(set => {
+        const card = createSetCard(set);
+        grid.appendChild(card);
+    });
+    
+    updateSortButtons();
+}
+
+function createCollectionButton() {
+    const button = document.createElement('button');
+    button.className = 'year-vert-btn collection-btn';
+    button.setAttribute('data-year', 'collection');
+    button.textContent = 'Коллекция';
+    
+    button.addEventListener('click', function() {
+        showYear('collection');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    return button;
+}
+
+function sortSets(sets, sortType) {
+    const sortedSets = [...sets];
+    
+    switch(sortType) {
+        case 'pieces-asc':
+            return sortedSets.sort((a, b) => parsePieces(a.pieces) - parsePieces(b.pieces));
+        case 'pieces-desc':
+            return sortedSets.sort((a, b) => parsePieces(b.pieces) - parsePieces(a.pieces));
+        case 'minifigs-asc':
+            return sortedSets.sort((a, b) => parseMinifigs(a.minifigs) - parseMinifigs(b.minifigs));
+        case 'minifigs-desc':
+            return sortedSets.sort((a, b) => parseMinifigs(b.minifigs) - parseMinifigs(a.minifigs));
+        default:
+            return sortedSets.sort((a, b) => a.id - b.id);
+    }
+}
+
+function createSortButtons() {
+    const sortContainer = document.createElement('div');
+    sortContainer.className = 'sort-container';
+    
+    const sortLabel = document.createElement('span');
+    sortLabel.className = 'sort-label';
+    sortLabel.textContent = 'Сортировка:';
+    sortContainer.appendChild(sortLabel);
+    
+    const buttons = [
+        { value: 'default', text: 'По артикулу' },
+        { value: 'pieces-asc', text: 'По кол-ву деталей ▲' },
+        { value: 'pieces-desc', text: 'По кол-ву деталей ▼' },
+        { value: 'minifigs-asc', text: 'По кол-ву минифигурок ▲' },
+        { value: 'minifigs-desc', text: 'По кол-ву минифигурок ▼' }
+    ];
+    
+    buttons.forEach(btn => {
+        const button = document.createElement('button');
+        button.className = 'sort-btn';
+        button.setAttribute('data-sort', btn.value);
+        button.textContent = btn.text;
+        
+        if (btn.value === catalog.currentSort) {
+            button.classList.add('active');
+        }
+        
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            catalog.currentSort = btn.value;
+            
+            if (currentYear === 'collection') {
+                updateCollectionPage();
+            } else if (typeof currentYear === 'number') {
+                updateYearPage(currentYear);
+            }
+        });
+        
+        sortContainer.appendChild(button);
+    });
+    
+    return sortContainer;
+}
+
+function updateSortButtons() {
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-sort') === catalog.currentSort) {
+            btn.classList.add('active');
+        }
+    });
+}
 
 function addSet(id, year, name, number, pieces, minifigs) {
     
@@ -53,6 +224,10 @@ function toggleOwned(setId, cardElement) {
         cardElement.classList.add('owned-set');
     }
     saveOwnedSets();
+
+    if (currentYear === 'collection') {
+        updateCollectionPage();
+    }
 }
 
 function createImageElement(setId) {
@@ -122,14 +297,16 @@ function createYearPage(year) {
     const title = document.createElement('div');
     title.className = 'year-title';
     const setCount = catalog.setsByYear[year] ? catalog.setsByYear[year].length : 0;
-    title.textContent = `${year} год`;
+    title.textContent = `${year} год (${setCount} наборов)`; 
     page.appendChild(title);
 
     const grid = document.createElement('div');
     grid.className = 'sets-grid';
     
     const yearSets = catalog.setsByYear[year] || [];
-    yearSets.forEach(set => {
+    const sortedSets = sortSets(yearSets, catalog.currentSort); 
+    
+    sortedSets.forEach(set => { 
         const card = createSetCard(set);
         grid.appendChild(card);
     });
@@ -159,14 +336,29 @@ function showYear(year) {
         page.classList.remove('active-page');
     });
     
+    if (year === 'collection') {
+        updateCollectionPage();
+    }
+    
     const selectedPage = document.getElementById(`page-${year}`);
     if (selectedPage) {
         selectedPage.classList.add('active-page');
+        
+        if (!selectedPage.querySelector('.sort-container')) {
+            const sortContainer = createSortButtons();
+            const title = selectedPage.querySelector('.year-title');
+            if (title) {
+                title.after(sortContainer);
+            } else {
+                selectedPage.insertBefore(sortContainer, selectedPage.firstChild);
+            }
+        }
     }
     
     document.querySelectorAll('.year-vert-btn').forEach(btn => {
-        const btnYear = parseInt(btn.getAttribute('data-year'));
-        if (btnYear === year) {
+        const btnYear = btn.getAttribute('data-year');
+        if ((btnYear === 'collection' && year === 'collection') || 
+            (parseInt(btnYear) === year)) {
             btn.classList.add('active');
         } else {
             btn.classList.remove('active');
@@ -769,7 +961,10 @@ function initApp() {
     
     const sidebar = document.getElementById('yearSidebar');
     const pagesContainer = document.getElementById('pagesContainer');
-    
+    const collectionButton = createCollectionButton();
+    sidebar.appendChild(collectionButton);
+    const collectionPage = createCollectionPage();
+    pagesContainer.appendChild(collectionPage);
     const startYear = 1999;
     const endYear = 2025;
     
@@ -785,13 +980,11 @@ function initApp() {
         pagesContainer.appendChild(page);
     }
 
-    showYear(startYear);
+    showYear('collection');
 
     console.log('LEGO STAR WARS CATALOG');
     console.log(`Total sets: ${catalog.sets.length}`);
     console.log(`Next available ID: ${catalog.nextId}`);
-    console.log('To add a new set, use: addSet(year, name, number, pieces, minifigs)');
-    console.log('Then create images/[ID].jpg for the image');
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
